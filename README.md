@@ -25,6 +25,14 @@ Example:
 273.16~0.009K100.017~0.006
 ```
 
+Notice how `±` is represented by `~`.
+
+Uncertainty can be ommited for resistance but not temperature:
+
+```
+273.16~0.009K100.017
+```
+
 #### Coefficients:
 
 Format: `[A]_[B]_[C]`
@@ -41,16 +49,17 @@ Sub-Range 8: 0.01 °C to 419.527 °C (Water-Zinc)
 
 Fixed points:
 
-- Water: 273.16±0.009K Resistance: 100.0135±0.006Ω
-- Tin:  505.078±0.012K Resistance: 188.9427±0.006Ω
-- Zinc: 692,677±0.096K Resistance: 256.6981±0.006Ω
+- Water: 273.16 ± 0.009K 
+  - Resistance: 100.0135 ± 0.006Ω
+- Tin:  505.078 ± 0.012K 
+  - Resistance: 188.9427 ± 0.006Ω
+- Zinc: 692,677 ± 0.096K 
+  - Resistance: 256.6981 ± 0.006Ω
 
 Coefficients:
 
 - a8: -2.0786366E-04
 - b8: -8.8309895E-05
-
-
 
 #### Put together:
 
@@ -58,7 +67,6 @@ Coefficients:
 8/273.16~0.009K100.0135~0.006_505.078+0.012K188.9427~0.006_692,677~0.096K256.6981~0.006/-2.0786366E-04_-8.8309895E-05
 ```
 
-Notice how `±` is represented by `~`!
 
 #### Full payload:
 
