@@ -7,17 +7,33 @@ This format is dedicated for QR Codes and URLs but can be used for any purpose.
 
 File extension: `.qt90`
 
-### Format:
+### Formats:
+
+#### Variant A: 
 
 ```
 qt90://[Sub-Range]/[Fixed point]_[Fixed point]/[Coefficient]_[Coefficient]
 ```
 
+#### Variant B: 
+
+```
+qt90://[Sub-Range]/[Fixed point]_[Fixed point]
+```
+
+#### Variant C: 
+
+```
+qt90://[Sub-Range]/[Triple point of Water]/[Coefficient]_[Coefficient]
+```
+
+
 #### Sub-Range:
 
-Just integer identifier.
+Integer identifier.
 
 More at: Appendix A: ITS-90 Sub-ranges
+
 
 #### Fixed points:
 
@@ -25,15 +41,26 @@ More at: Appendix A: ITS-90 Sub-ranges
 [Temperature(Kelvin)~Uncertainty(Kelvin)]K[Resistance(Ohms)~Uncertainty(Ohms)]
 ```
 
-Example:
+Notice how `±` is represented by `~`.
+
+One can use one of the two notations:
+
+- Temperatures
 
 ```
 273.16~0.009K100.017~0.006
 ```
 
-Notice how `±` is represented by `~`.
+- Shorthand letters
 
-Uncertainty can be ommited for resistance but not temperature:
+```
+W~0.009K100.0170~0.006
+```
+
+Notice how temperature is now replaced by one letter (for list of letters see Appendix B):
+
+
+##### Uncertainty can be ommited for resistance:
 
 ```
 273.16~0.009K100.017
@@ -53,13 +80,13 @@ Example:
 
 Sub-Range 8: 0.01 °C to 419.527 °C (Water-Zinc)
 
-Fixed points:
+Calibration points:
 
 - Water: 273.16 ± 0.009K 
   - Resistance: 100.0135 ± 0.006Ω
 - Tin:  505.078 ± 0.012K 
   - Resistance: 188.9427 ± 0.006Ω
-- Zinc: 692,677 ± 0.096K 
+- Zinc: 692.677 ± 0.096K 
   - Resistance: 256.6981 ± 0.006Ω
 
 Coefficients:
@@ -67,12 +94,33 @@ Coefficients:
 - a8: -2.0786366E-04
 - b8: -8.8309895E-05
 
-#### Put together:
+#### Calibration data:
+
+##### Variant A:
+
+- Temperatures
 
 ```
-8/273.16~0.009K100.0135~0.006_505.078+0.012K188.9427~0.006_692,677~0.096K256.6981~0.006/-2.0786366E-04_-8.8309895E-05
+8/273.16~0.009K100.0135~0.006_505.078~0.012K188.9427~0.006_692.677~0.096K256.6981~0.006/-2.0786366E-04_-8.8309895E-05
 ```
 
+- Shorthand letters: 
+
+```
+8/W~0.009K100.0135~0.006_T~0.012K188.9427~0.006_Z~0.096K256.6981~0.006/-2.0786366E-04_-8.8309895E-05
+```
+
+##### Variant B:
+
+```
+8/W~0.009K100.0135~0.006_T~0.012K188.9427~0.006_Z~0.096K256.6981~0.006
+```
+
+##### Variant C:
+
+```
+8/W~0.009K100.0135/-2.0786366E-04_-8.8309895E-05
+```
 
 #### Full payload:
 
@@ -162,4 +210,18 @@ TP of Water to FP of Indium
 
 TP of Water to MP of Gallium
 
+## Appendix B: ITS-90 Fixed Points shorthand letters
+
+- `L` - Freezing Point of Aluminum
+- `R` - Triple Point of Argon
+- `G` - Melting Point of Gallium
+- `H` - Triple Point of Helium
+- `I` - Freezing Point of Indium
+- `M` - Freezing Point of Mercury
+- `N` - Triple Point of Neon
+- `O` - Triple Point of Oxygen
+- `S` - Freezing Point of Silver
+- `T` - Freezing Point of Tin
+- `W` - Triple Point of Water
+- `Z` - Freezing Point of Zinc
 
