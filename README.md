@@ -225,3 +225,6 @@ TP of Water to MP of Gallium
 - `W` - Triple Point of Water
 - `Z` - Freezing Point of Zinc
 
+## ITS-90 Full v1.0
+
+[JSON Schema v1.0](https://calibration.equipment/schemas/its90/v1.0.json)

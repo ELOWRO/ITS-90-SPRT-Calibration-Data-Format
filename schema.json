@@ -1,0 +1,648 @@
+{
+  "$id": "https://calibration.equipment/schemas/its90/v1.0.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ITS-90 SPRT Calibration Data",
+  "description": "Data representation of a calibration certificate for a Standard Platinum Resistance Thermometer (SPRT) according to the ITS-90 standard.",
+  "type": "object",
+  "required": [
+    "formatVersion",
+    "calibrationInfo",
+    "instrument",
+    "calibrationData",
+    "computedCoefficients"
+  ],
+  "properties": {
+    "formatVersion": {
+      "type": "string",
+      "description": "Version of the data format",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+    "calibrationInfo": {
+      "type": "object",
+      "description": "Information about the calibration process",
+      "required": [
+        "laboratoryName",
+        "calibrationDate",
+        "certificateNumber"
+      ],
+      "properties": {
+        "laboratoryName": {
+          "type": "string",
+          "description": "Name of the calibration laboratory"
+        },
+        "accreditationInfo": {
+          "type": "object",
+          "description": "Laboratory accreditation details",
+          "properties": {
+            "body": {
+              "type": "string",
+              "description": "Accreditation body name"
+            },
+            "certificateNumber": {
+              "type": "string",
+              "description": "Accreditation certificate number"
+            },
+            "scope": {
+              "type": "string",
+              "description": "Accreditation scope relevant to this calibration"
+            },
+            "validUntil": {
+              "type": "string",
+              "description": "Accreditation validity date",
+              "format": "date"
+            }
+          }
+        },
+        "calibrationDate": {
+          "type": "string",
+          "description": "Date when calibration was performed",
+          "format": "date"
+        },
+        "calibrationMethod": {
+          "type": "string",
+          "description": "Reference to calibration procedure or method used"
+        },
+        "certificateNumber": {
+          "type": "string",
+          "description": "Unique identifier for this calibration certificate"
+        },
+        "technicians": {
+          "type": "array",
+          "description": "Personnel who performed the calibration",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of technician"
+              },
+              "role": {
+                "type": "string",
+                "description": "Role in the calibration process"
+              }
+            }
+          }
+        },
+        "validUntil": {
+          "type": "string",
+          "description": "Date until which the calibration is considered valid",
+          "format": "date"
+        },
+        "environmentalConditions": {
+          "type": "object",
+          "description": "Environmental conditions during calibration",
+          "properties": {
+            "ambientTemperature": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "number",
+                  "description": "Minimum ambient temperature during calibration (°C)"
+                },
+                "max": {
+                  "type": "number",
+                  "description": "Maximum ambient temperature during calibration (°C)"
+                },
+                "average": {
+                  "type": "number",
+                  "description": "Average ambient temperature during calibration (°C)"
+                }
+              }
+            },
+            "relativeHumidity": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "number",
+                  "description": "Minimum relative humidity during calibration (%)"
+                },
+                "max": {
+                  "type": "number",
+                  "description": "Maximum relative humidity during calibration (%)"
+                },
+                "average": {
+                  "type": "number",
+                  "description": "Average relative humidity during calibration (%)"
+                }
+              }
+            },
+            "barometricPressure": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "number",
+                  "description": "Minimum barometric pressure during calibration (hPa)"
+                },
+                "max": {
+                  "type": "number",
+                  "description": "Maximum barometric pressure during calibration (hPa)"
+                },
+                "average": {
+                  "type": "number",
+                  "description": "Average barometric pressure during calibration (hPa)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "description": "Information about the calibrated instrument",
+      "required": [
+        "manufacturer",
+        "model",
+        "serialNumber",
+        "rTPW"
+      ],
+      "properties": {
+        "manufacturer": {
+          "type": "string",
+          "description": "SPRT manufacturer name"
+        },
+        "model": {
+          "type": "string",
+          "description": "SPRT model identifier"
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "SPRT serial number"
+        },
+        "rTPW": {
+          "type": "number",
+          "description": "Resistance at triple point of water (ohms)",
+          "exclusiveMinimum": 0
+        },
+        "nominalResistance": {
+          "type": "number",
+          "description": "Nominal resistance at 0°C (ohms)",
+          "enum": [25, 100]
+        },
+        "alpha": {
+          "type": "number",
+          "description": "Temperature coefficient of resistance",
+          "minimum": 0.003,
+          "maximum": 0.004
+        },
+        "immersionDepth": {
+          "type": "number",
+          "description": "Immersion depth used during calibration (mm)",
+          "minimum": 0
+        },
+        "sheath": {
+          "type": "object",
+          "description": "Information about the SPRT sheath",
+          "properties": {
+            "material": {
+              "type": "string",
+              "description": "Material of the SPRT sheath",
+              "enum": ["Quartz", "Metal", "Sapphire", "Other"]
+            },
+            "length": {
+              "type": "number",
+              "description": "Length of the SPRT (mm)",
+              "minimum": 0
+            },
+            "diameter": {
+              "type": "number",
+              "description": "Diameter of the SPRT (mm)",
+              "minimum": 0
+            }
+          }
+        },
+        "bridgeModel": {
+          "type": "string",
+          "description": "Model of resistance bridge used for measurements"
+        },
+        "bridgeSerialNumber": {
+          "type": "string",
+          "description": "Serial number of resistance bridge used"
+        }
+      }
+    },
+    "calibrationData": {
+      "type": "object",
+      "description": "Core calibration data",
+      "required": [
+        "subRange",
+        "fixedPoints"
+      ],
+      "properties": {
+        "subRange": {
+          "type": "object",
+          "description": "ITS-90 sub-range information",
+          "required": [
+            "id",
+            "description",
+            "temperatureRange"
+          ],
+          "properties": {
+            "id": {
+              "type": "integer",
+              "description": "Sub-range identifier (1-11)",
+              "minimum": 1,
+              "maximum": 11
+            },
+            "description": {
+              "type": "string",
+              "description": "Text description of the sub-range"
+            },
+            "temperatureRange": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "number",
+                  "description": "Minimum temperature in °C"
+                },
+                "max": {
+                  "type": "number",
+                  "description": "Maximum temperature in °C"
+                }
+              },
+              "required": ["min", "max"]
+            }
+          }
+        },
+        "fixedPoints": {
+          "type": "array",
+          "description": "Array of fixed point calibration measurements",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "fixedPointType",
+              "temperature",
+              "resistance"
+            ],
+            "properties": {
+              "fixedPointType": {
+                "type": "string",
+                "description": "Type of fixed point",
+                "enum": [
+                  "TP of Hydrogen",
+                  "TP of Neon",
+                  "TP of Oxygen",
+                  "TP of Argon",
+                  "TP of Mercury",
+                  "TP of Water",
+                  "MP of Gallium",
+                  "FP of Indium",
+                  "FP of Tin",
+                  "FP of Zinc",
+                  "FP of Aluminum",
+                  "FP of Silver"
+                ]
+              },
+              "shorthand": {
+                "type": "string",
+                "description": "Shorthand letter code for the fixed point",
+                "enum": ["H", "N", "O", "R", "M", "W", "G", "I", "T", "Z", "L", "S"]
+              },
+              "temperature": {
+                "type": "object",
+                "required": ["value", "uncertainty"],
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "description": "ITS-90 assigned temperature (K)",
+                    "minimum": 0
+                  },
+                  "uncertainty": {
+                    "type": "number",
+                    "description": "Temperature uncertainty (K)",
+                    "minimum": 0
+                  },
+                  "expUncertainty": {
+                    "type": "number",
+                    "description": "Expanded uncertainty (K) with coverage factor",
+                    "minimum": 0
+                  },
+                  "coverageFactor": {
+                    "type": "number",
+                    "description": "Coverage factor (k) for expanded uncertainty",
+                    "default": 2,
+                    "minimum": 1
+                  }
+                }
+              },
+              "resistance": {
+                "type": "object",
+                "required": ["value"],
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "description": "Measured resistance (ohms)",
+                    "exclusiveMinimum": 0
+                  },
+                  "uncertainty": {
+                    "type": "number",
+                    "description": "Resistance uncertainty (ohms)",
+                    "minimum": 0
+                  },
+                  "expUncertainty": {
+                    "type": "number",
+                    "description": "Expanded uncertainty (ohms) with coverage factor",
+                    "minimum": 0
+                  },
+                  "coverageFactor": {
+                    "type": "number",
+                    "description": "Coverage factor (k) for expanded uncertainty",
+                    "default": 2,
+                    "minimum": 1
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Method used to determine resistance"
+                  }
+                }
+              },
+              "reference": {
+                "type": "object",
+                "description": "Reference standard information",
+                "properties": {
+                  "cellId": {
+                    "type": "string",
+                    "description": "Identifier of the fixed-point cell used"
+                  },
+                  "lastCalibrationDate": {
+                    "type": "string",
+                    "description": "Date when reference was last calibrated",
+                    "format": "date"
+                  },
+                  "traceability": {
+                    "type": "string",
+                    "description": "Traceability chain to national/international standard"
+                  }
+                }
+              },
+              "measurements": {
+                "type": "array",
+                "description": "Individual measurements for this fixed point (if multiple readings)",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Date and time of measurement",
+                      "format": "date-time"
+                    },
+                    "resistance": {
+                      "type": "number",
+                      "description": "Individual resistance reading (ohms)"
+                    },
+                    "residual": {
+                      "type": "number",
+                      "description": "Deviation from mean value"
+                    }
+                  }
+                }
+              },
+              "hydrostatic": {
+                "type": "object",
+                "description": "Hydrostatic head correction information",
+                "properties": {
+                  "applied": {
+                    "type": "boolean",
+                    "description": "Whether hydrostatic head correction was applied"
+                  },
+                  "height": {
+                    "type": "number",
+                    "description": "Height difference (mm)"
+                  },
+                  "correction": {
+                    "type": "number",
+                    "description": "Applied correction value"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "computedCoefficients": {
+      "type": "object",
+      "description": "Coefficients calculated from the calibration data",
+      "required": ["coefficients", "deviations"],
+      "properties": {
+        "coefficients": {
+          "type": "object",
+          "description": "ITS-90 calibration coefficients for the sub-range",
+          "properties": {
+            "a": {
+              "type": "number",
+              "description": "a coefficient"
+            },
+            "b": {
+              "type": "number",
+              "description": "b coefficient"
+            },
+            "c": {
+              "type": "number",
+              "description": "c coefficient (for some sub-ranges)"
+            },
+            "d": {
+              "type": "number",
+              "description": "d coefficient (for some sub-ranges)"
+            }
+          }
+        },
+        "algorithm": {
+          "type": "string",
+          "description": "Algorithm used to compute coefficients"
+        },
+        "deviations": {
+          "type": "object",
+          "description": "Deviations and quality metrics",
+          "properties": {
+            "standardDeviation": {
+              "type": "number",
+              "description": "Standard deviation of fit (mK)",
+              "minimum": 0
+            },
+            "maximumDeviation": {
+              "type": "number",
+              "description": "Maximum deviation (mK)"
+            },
+            "residuals": {
+              "type": "array",
+              "description": "Residuals at each fixed point",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fixedPoint": {
+                    "type": "string",
+                    "description": "Fixed point identifier"
+                  },
+                  "deviation": {
+                    "type": "number",
+                    "description": "Deviation at this point (mK)"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "uncertaintyBudget": {
+      "type": "object",
+      "description": "Detailed uncertainty budget for the calibration",
+      "properties": {
+        "components": {
+          "type": "array",
+          "description": "Individual uncertainty components",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "Source of uncertainty"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["A", "B"],
+                "description": "Type A (statistical) or Type B (other) evaluation"
+              },
+              "distribution": {
+                "type": "string",
+                "enum": ["normal", "rectangular", "triangular", "other"],
+                "description": "Probability distribution"
+              },
+              "value": {
+                "type": "number",
+                "description": "Standard uncertainty value"
+              },
+              "units": {
+                "type": "string",
+                "description": "Units of the uncertainty value"
+              },
+              "divisor": {
+                "type": "number",
+                "description": "Divisor applied for distribution conversion"
+              },
+              "sensitivityCoefficient": {
+                "type": "number",
+                "description": "Sensitivity coefficient"
+              },
+              "contribution": {
+                "type": "number",
+                "description": "Contribution to combined uncertainty"
+              }
+            },
+            "required": ["source", "type", "value"]
+          }
+        },
+        "combinedUncertainty": {
+          "type": "number",
+          "description": "Combined standard uncertainty"
+        },
+        "expandedUncertainty": {
+          "type": "number",
+          "description": "Expanded uncertainty"
+        },
+        "coverageFactor": {
+          "type": "number",
+          "description": "Coverage factor (k)",
+          "default": 2
+        },
+        "confidenceLevel": {
+          "type": "number",
+          "description": "Confidence level as percentage",
+          "default": 95
+        }
+      }
+    },
+    "derivedData": {
+      "type": "object",
+      "description": "Additional data derived from calibration",
+      "properties": {
+        "interpolationTable": {
+          "type": "array",
+          "description": "Table of calculated values at regular intervals",
+          "items": {
+            "type": "object",
+            "properties": {
+              "temperature": {
+                "type": "number",
+                "description": "Temperature (°C)"
+              },
+              "resistance": {
+                "type": "number",
+                "description": "Calculated resistance (ohms)"
+              },
+              "sensitivity": {
+                "type": "number",
+                "description": "dR/dT sensitivity (ohms/°C)"
+              },
+              "uncertainty": {
+                "type": "number",
+                "description": "Uncertainty at this point (°C)"
+              }
+            }
+          }
+        }
+      }
+    },
+    "compactRepresentations": {
+      "type": "object",
+      "description": "Compact representations for interoperability",
+      "properties": {
+        "qt90": {
+          "type": "string",
+          "description": "Compact qt90 format representation"
+        },
+        "callendar": {
+          "type": "object",
+          "description": "Callendar-Van Dusen coefficients",
+          "properties": {
+            "R0": {
+              "type": "number",
+              "description": "Resistance at 0°C (ohms)"
+            },
+            "A": {
+              "type": "number",
+              "description": "A coefficient"
+            },
+            "B": {
+              "type": "number",
+              "description": "B coefficient"
+            },
+            "C": {
+              "type": "number",
+              "description": "C coefficient (below 0°C)"
+            }
+          }
+        }
+      }
+    },
+    "history": {
+      "type": "array",
+      "description": "Historical calibration data for this instrument",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Date of previous calibration",
+            "format": "date"
+          },
+          "certificateNumber": {
+            "type": "string",
+            "description": "Certificate number of previous calibration"
+          },
+          "rTPW": {
+            "type": "number",
+            "description": "RTPW from previous calibration (ohms)"
+          },
+          "drift": {
+            "type": "number",
+            "description": "Calculated drift since previous calibration (mK/year)"
+          }
+        }
+      }
+    }
+  }
+}
